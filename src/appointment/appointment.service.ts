@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { Appointment } from './schemas/appointment.schema';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
+import { AuthInfo } from 'src/auth/auth.guard';
 
 @Injectable()
 export class AppointmentService {
@@ -13,12 +14,12 @@ export class AppointmentService {
     private userModel: Model<Appointment>,
   ) {}
   
-  async create(createAppointmentDto:CreateAppointmentDto) {
-    return await this.userModel.create(createAppointmentDto) ;
+  async create(createAppointmentDto:CreateAppointmentDto,auth:AuthInfo) {
+    const appointment = await this.userModel.create({...createAppointmentDto, patient:auth._id});
+    return appointment
  }
 
-
-    async findAll() {
+    async findAll(auth:AuthInfo) {
       return await this.userModel.find({},{},{lean:true}) ;
    }
  

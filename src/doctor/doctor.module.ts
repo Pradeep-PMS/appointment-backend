@@ -9,11 +9,11 @@ import { Doctor, DoctorSchema } from './schemas/doctor.schema';
   imports: [
 
     MongooseModule.forFeature([{ name: Doctor.name, schema: DoctorSchema }]),
-    JwtModule.register({
-      global: true,
-      secret: "Hello",
-      signOptions: { expiresIn: '60m' },
-    }),
+    // JwtModule.register({
+    //   global: true,
+    //   secret: "Hello",
+    //   signOptions: { expiresIn: '60m' },
+    // }),
 
   ],
   controllers: [DoctorController],

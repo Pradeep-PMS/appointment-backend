@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard, AuthRequest } from 'src/auth/auth.guard';
 
 
 @ApiTags("Appointment")
@@ -10,14 +11,18 @@ import { ApiTags } from '@nestjs/swagger';
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 
+  @ApiBearerAuth("authentication")
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createAppointmentDto: CreateAppointmentDto) {
-    return this.appointmentService.create(createAppointmentDto);
+  create(@Body() createAppointmentDto: CreateAppointmentDto,@Request() req:AuthRequest) {
+    return this.appointmentService.create(createAppointmentDto,req.auth);
   }
 
+  @ApiBearerAuth("authentication")
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.appointmentService.findAll();
+  findAll(@Request() req:AuthRequest) {
+    return this.appointmentService.findAll(req.auth);
   }
 
   @Get(':id')

@@ -15,17 +15,11 @@ import { AppointmentModule } from './appointment/appointment.module';
     isGlobal:true,
   }),
 
-  // JwtModule.registerAsync({
-  //   inject: [ConfigService],
-  //   useFactory: (config: ConfigService) =>{
-  //     return ({
-  //       secret: config.get("JWT_SECRET"),
-  //       signOptions: {
-  //         expiresIn: config.get("JWT_EXPIRE")
-  //       }
-  //     })
-  //   }
-  // }),
+  JwtModule.register({
+     global:true,
+     secret: "Hello",
+     signOptions: {expiresIn:'60m'},
+    }),
   MongooseModule.forRoot(process.env.DB_URI),
    DoctorModule,
    PatientModule,
